@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#f0f0f0"/>
+  <rect x="2" y="2" width="1276" height="716" fill="none" stroke="#cfcfcf" stroke-width="4" stroke-dasharray="24 16"/>
+  <text x="640" y="345" font-family="Google Sans, Noto Sans, Arial, sans-serif" font-size="56" fill="#9a9a9a" text-anchor="middle">Media placeholder</text>
+  <text x="640" y="415" font-family="Google Sans, Noto Sans, Arial, sans-serif" font-size="30" fill="#b5b5b5" text-anchor="middle">Replace with a video or figure in static/</text>
+</svg>

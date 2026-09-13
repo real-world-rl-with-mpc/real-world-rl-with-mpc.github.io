@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation">
+  <meta name="keywords" content="Reinforcement Learning, Model Predictive Control, Dexterous Manipulation, In-Hand Rotation, Allegro Hand, Robotics">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Anonymous submission</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- TODO: add static/videos/teaser.mp4 (H.264, 16:9). The poster shows until then. -->
+      <video id="teaser" autoplay muted loop playsinline height="100%"
+             poster="./static/images/placeholder.svg">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        Sampling-based MPC provides prior experience and temporary guidance, so a 16-DoF Allegro hand learns
+        continuous in-hand rotation directly on hardware in <b>7 minutes</b> of online RL with about
+        <b>3 object drops</b>, then completes <b>1000 consecutive rotations</b> without a drop.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <!-- TODO: add clips to static/videos/ and one .item per clip -->
+        <div class="item item-rotation">
+          <video poster="./static/images/placeholder.svg" id="rotation" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/rotation_45mm_hex.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mpc">
+          <video poster="./static/images/placeholder.svg" id="mpc" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mpc_guidance.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-1000">
+          <video poster="./static/images/placeholder.svg" id="rot1000" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/rotation_1000.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-35mm">
+          <video poster="./static/images/placeholder.svg" id="hex35" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/adaptation_35mm_hex.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-55mm">
+          <video poster="./static/images/placeholder.svg" id="circ55" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/adaptation_55mm_circular.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-reorient">
+          <video poster="./static/images/placeholder.svg" id="reorient" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/goal_reorientation.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Real-world reinforcement learning (RL) offers a promising route to dexterous manipulation policies
+            that can adapt directly from physical interaction, but learning is hindered by inefficient early
+            exploration and costly failures. We propose a framework that uses sampling-based model predictive
+            control (MPC) as scaffolding for real-world dexterous RL, providing structured prior experience and
+            task-directed guidance during learning without human demonstrations or corrective actions.
+          </p>
+          <p>
+            A small set of MPC trajectories is first used to populate an offline replay buffer and to pretrain
+            the actor and critic. During online learning, MPC intermittently guides data collection while an
+            off-policy Soft Actor-Critic learner trains from both prior MPC experience and newly collected
+            physical interaction, with control gradually transitioning to the learned policy.
+          </p>
+          <p>
+            On continuous in-hand rotation with a 16-DoF Allegro hand, the method reaches 100% success in
+            policy-only evaluation (5/5 trials) after 7 minutes of online RL, following initialization with 20
+            MPC trajectories collected on hardware in 12 minutes. Online training incurs about three object drops
+            on average. After 20 minutes of online learning, the policy achieves more than five times the rotation
+            speed of the MPC controller. It completes 1000 consecutive rotations over more than 110 minutes
+            without a drop. Ablations show complementary benefits from MPC-based pretraining, retained MPC
+            experience, and online MPC guidance. We further demonstrate rapid adaptation to different object
+            geometries and successful goal-conditioned reorientation, showing that the framework enables
+            efficient, low-intervention, real-world dexterous RL.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <!-- TODO: replace VIDEO_ID with the YouTube id -->
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Method overview. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our framework uses sampling-based MPC as a scaffold for an off-policy learner, with the learned
+            policy progressively replacing MPC during real-world interaction. Training consists of three stages.
+            Both MPC and the learned policy produce commands through the same joint-level hand-control
+            interface, so the resulting transitions can be used by the same off-policy learner regardless of
+            which controller generated them. The MPC controller is a fixed guidance module: it maintains a
+            MuJoCo digital twin synchronized with the measured robot and object state and optimizes short-horizon
+            control trajectories with the cross-entropy method over low-dimensional motion primitives and
+            joint-level residuals.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 1 to static/images/overview.png and point src at it -->
+          <img src="./static/images/placeholder.svg" alt="Framework overview">
+          <p class="is-size-6 has-text-grey">
+            Overview of the framework. Stage 1: offline MPC data collection. Stage 2: pretraining of the actor
+            (behavior cloning with standard-deviation initialization) and critic (Soft-SARSA).
+            Stage 3: online SAC with mixed replay and MPC-policy scheduling.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Method overview. -->
+
+    <div class="columns is-centered">
+
+      <!-- Stage 1 + 2. -->
+      <div class="column">
+        <div class="content">
+          <h3 class="title is-4">Offline MPC Data and Pretraining</h3>
+          <p>
+            Before online learning, we collect a small dataset of trajectories with the MPC guidance controller.
+            All trajectories are retained as a fixed offline replay buffer and are also used to pretrain the
+            SAC actor and critic. Transitions are labeled with the same RL reward used online rather than the
+            MPC objective.
+          </p>
+          <p>
+            <b>Actor pretraining.</b> Behavior cloning on the pre-tanh mean with a constant base standard
+            deviation, return-weighted episode sampling to favour high-quality demonstrations, and epsilon
+            clipping of target actions to avoid saturation.
+          </p>
+          <p>
+            <b>Critic pretraining.</b> A Soft-SARSA target that augments the SARSA Bellman target with an
+            entropy bonus under the frozen BC actor, using the minimum over an ensemble of 10 target critics.
+          </p>
+        </div>
+      </div>
+      <!--/ Stage 1 + 2. -->
+
+      <!-- Stage 3. -->
+      <div class="column">
+        <div class="content">
+          <h3 class="title is-4">Online SAC with Mixed Replay and MPC-Policy Scheduling</h3>
+          <p>
+            <b>Mixed replay.</b> Each mini-batch draws 30% of its samples from the fixed MPC dataset and 70%
+            from newly collected online experience. Transitions from MPC-guided and policy-controlled execution
+            share one online buffer and are treated identically by the learner.
+          </p>
+          <p>
+            <b>MPC-policy scheduling.</b> The probability of executing the learned policy increases linearly
+            from 0.5 to 1 over the first 6000 environment steps (about 10 minutes), after which MPC guidance is
+            no longer used. The controller is sampled once every 40 steps and used for the whole chunk, which
+            preserves temporally coherent finger motions. MPC and policy actions are never blended.
+          </p>
+        </div>
+      </div>
+      <!--/ Stage 3. -->
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Real-World Results</h2>
+
+        <!-- Setup. -->
+        <h3 class="title is-4">Experimental setup</h3>
+        <div class="content has-text-justified">
+          <p>
+            Experiments use a 16-DoF Allegro hand mounted on a Franka FR3 arm. The policy commands joint
+            position targets at 10 Hz. Object pose is measured by OptiTrack motion capture and provided to both
+            the policy observation and the synchronized MuJoCo model used by MPC. The primary task is continuous
+            in-hand rotation of a 45 mm across-flats hexagonal object. The reward uses only rotation progress, a
+            time penalty, a success bonus for each full rotation, and a terminal drop penalty. Before online RL,
+            20 MPC trajectories (about 12 minutes of interaction) initialize the replay buffer and pretraining.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 2 to static/images/setup.png -->
+          <img src="./static/images/placeholder.svg" alt="Experimental setup" style="width: 75%;">
+          <p class="is-size-6 has-text-grey">
+            Left: continuous in-hand rotation of a hexagonal object. Right: goal-conditioned reorientation toward
+            a commanded object heading.
+          </p>
+        </div>
+        <!--/ Setup. -->
+
+        <!-- Ablations. -->
+        <h3 class="title is-4">Ablations: the three roles of MPC are complementary</h3>
+        <div class="content has-text-justified">
+          <p>
+            We isolate MPC replay (R), actor-critic pretraining (P), and online MPC guidance (G) across six
+            configurations, measuring policy-only success rate, rotation speed, and cumulative object drops over
+            45 minutes of online learning.
+          </p>
+          <ul>
+            <li><b>Full method (R+P+G)</b> reaches its first 5/5 evaluation after 7.4 minutes in all three runs
+              and incurs about three drops on average (1, 3, and 6).</li>
+            <li><b>Pretraining</b> cuts the time to 5/5 from about 16 to 7 minutes and drops from about 17 to 3
+              (Full method vs. No Pretrain).</li>
+            <li><b>Guidance alone</b> enables learning: RL Only never completes a rotation in 45 minutes and
+              accumulates 181 drops, while Guidance Only reaches 5/5 after 18.0 ± 2.4 minutes with 35 drops.</li>
+            <li><b>MPC replay</b> roughly halves drops (17 vs. 35) at a comparable learning time, and reduces
+              drops from 181 to 98 even without guidance, without by itself enabling reliable rotation.</li>
+            <li><b>Online guidance</b> makes early learning consistent: No Guidance (R+P) needs 25.8 ± 9.4
+              minutes and 18 drops despite identical replay and pretraining.</li>
+          </ul>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 3 to static/images/ablation.png -->
+          <img src="./static/images/placeholder.svg" alt="Ablation results">
+          <p class="is-size-6 has-text-grey">
+            Ablation results for continuous in-hand rotation: success rate, rotation speed, and cumulative drops
+            versus wall-clock time. Shaded regions show ± one standard deviation over three runs.
+          </p>
+        </div>
+        <!--/ Ablations. -->
+
+        <!-- Extended evaluation. -->
+        <h3 class="title is-4">Outperforms the planner that guided it</h3>
+        <div class="content has-text-justified">
+          <p>
+            After 20 minutes of online learning, we compare the policy against direct MPC execution and a PPO
+            policy trained in MuJoCo with domain randomization and deployed without adaptation. Over 20
+            successful rotations each, the sim-to-real PPO policy completes 20 of 28 trials at 31.5 ± 7.8°/s,
+            direct MPC completes all 20 at 9.9 ± 2.8°/s, and our policy completes all 20 at 55.3 ± 2.4°/s,
+            more than five times the speed of the planner that guided its training.
+          </p>
+          <p>
+            Executed continuously, the policy completes <b>1000 consecutive rotations without a single drop</b>,
+            about 110 minutes of uninterrupted operation at a mean speed of 55.2°/s.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 4 to static/images/extended_eval.png -->
+          <img src="./static/images/placeholder.svg" alt="Extended evaluation" style="width: 75%;">
+          <p class="is-size-6 has-text-grey">
+            (a) Rotation speed for sim-to-real PPO, direct MPC, and our policy. (b) Rotation speed over 1000
+            consecutive rotations.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="rotation-1000-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%"
+                 poster="./static/images/placeholder.svg">
+            <source src="./static/videos/rotation_1000.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <!--/ Extended evaluation. -->
+
+        <!-- Adaptation. -->
+        <h3 class="title is-4">Adaptation to new object geometries</h3>
+        <div class="content has-text-justified">
+          <p>
+            Starting from the policy trained on the 45 mm hexagonal object, we adapt separately to a 35 mm
+            hexagonal object and a 55 mm circular object. Only the geometry in the MPC model is updated: no new
+            offline MPC data is collected, pretraining is not repeated, and the original replay buffer is not
+            reused. Online MPC guidance alone provides task-directed exploration on the new geometry.
+          </p>
+          <p>
+            The transferred policy already succeeds (80% and 100% at the first evaluation), and adaptation makes
+            it faster without sacrificing reliability: mean speed rises from 45.5 to 83.6°/s on the 55 mm circular
+            object and from 51.0 to 74.1°/s on the 35 mm hexagonal object, with only 3 and 8 drops during
+            adaptation. Both adapted policies complete 100 consecutive rotations without a drop.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 5 and Fig. 6 to static/images/adaptation.png -->
+          <img src="./static/images/placeholder.svg" alt="Adaptation to new object geometries" style="width: 75%;">
+          <p class="is-size-6 has-text-grey">
+            Real-world adaptation to new object geometries, and evaluation before and after adaptation.
+          </p>
+        </div>
+        <!--/ Adaptation. -->
+
+        <!-- Goal-conditioned reorientation. -->
+        <h3 class="title is-4">Goal-conditioned reorientation</h3>
+        <div class="content has-text-justified">
+          <p>
+            The same framework is applied to goal-conditioned reorientation about an axis perpendicular to the
+            object's principal axis, with the desired heading varied within ±20°. The policy is additionally
+            conditioned on the goal heading, and the progress reward measures the reduction in absolute heading
+            error. About 7 minutes of MPC interaction initialize replay and pretraining.
+          </p>
+          <p>
+            Mean final reaching error drops from about 17° at the first evaluation to a few degrees thereafter,
+            with 20 drops over 45 minutes of online training. The final policy succeeds in 100 of 103 trials
+            (97.1%) with no drops and a mean reaching speed of 20.5 ± 8.2°/s. The three failures are timeouts.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <!-- TODO: export Fig. 7 to static/images/reorientation.png -->
+          <img src="./static/images/placeholder.svg" alt="Goal-conditioned reorientation results" style="width: 75%;">
+          <p class="is-size-6 has-text-grey">
+            (a) Mean absolute final reaching error during online learning. (b) Reaching speed of the final policy
+            over 103 evaluation trials.
+          </p>
+        </div>
+        <!--/ Goal-conditioned reorientation. -->
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Implementation Details</h2>
+        <div class="content has-text-justified">
+          <p>
+            Settings shared across experiments. <!-- TODO: add remaining pretraining and SAC hyperparameters
+            (network sizes, learning rates, batch size, discount, entropy coefficient, update-to-data ratio). -->
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Control frequency</td><td>10 Hz, joint position targets for 16 Allegro DoF</td></tr>
+              <tr><td>Offline MPC trajectories (rotation)</td><td>20 trajectories, one full rotation each, ~12 min</td></tr>
+              <tr><td>Offline MPC data (reorientation)</td><td>~7 min of interaction</td></tr>
+              <tr><td>Mini-batch replay mix</td><td>30% offline MPC data, 70% online data</td></tr>
+              <tr><td>Target critic ensemble</td><td>10 critics, minimum over ensemble</td></tr>
+              <tr><td>Initial policy-execution probability p<sub>0</sub></td><td>0.5</td></tr>
+              <tr><td>Scheduling horizon K</td><td>6000 environment steps (~10 min)</td></tr>
+              <tr><td>Controller chunk length L</td><td>40 steps</td></tr>
+              <tr><td>Rotation reward</td><td>λ<sub>ψ</sub> = 20, λ<sub>τ</sub> = −0.3, b<sub>succ</sub> = 200, b<sub>drop</sub> = −50</td></tr>
+              <tr><td>Evaluation</td><td>5 policy-only episodes, 90 s horizon, success = one full 2π rotation without a drop</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            Page template borrowed from <a href="https://nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
