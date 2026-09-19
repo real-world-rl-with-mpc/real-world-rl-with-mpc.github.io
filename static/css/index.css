@@ -305,3 +305,21 @@ body {
     width: 100%;
   }
 }
+
+/* Implementation tables: keep the parameter column compact. */
+.impl-table td:first-child {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.impl-table .table-subheader td {
+  background: #eef1f6;
+  font-weight: 600;
+  font-style: italic;
+}
+
+@media screen and (max-width: 768px) {
+  .impl-table td:first-child {
+    white-space: normal;
+  }
+}

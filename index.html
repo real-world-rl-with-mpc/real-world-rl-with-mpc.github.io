@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css?v=20260919b">
+  <link rel="stylesheet" href="./static/css/index.css?v=20260919c">
   <link rel="icon" href="./static/images/favicon.svg">
 
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -275,27 +275,76 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Implementation Details</h2>
-        <div class="content has-text-justified">
-          <p>
-            Settings shared across experiments.
-          </p>
-        </div>
+
+        <h3 class="title is-5">Real-world SAC with MPC scaffolding</h3>
         <div class="table-container">
-          <table class="table is-striped is-hoverable is-fullwidth">
+          <table class="table is-striped is-hoverable is-fullwidth impl-table">
             <thead>
               <tr><th>Parameter</th><th>Value</th></tr>
             </thead>
             <tbody>
-              <tr><td>Control frequency</td><td>10 Hz, joint position targets for 16 Allegro DoF</td></tr>
-              <tr><td>Offline MPC trajectories (rotation)</td><td>20 trajectories, one full rotation each, ~12 min</td></tr>
-              <tr><td>Offline MPC data (reorientation)</td><td>~7 min of interaction</td></tr>
-              <tr><td>Mini-batch replay mix</td><td>30% offline MPC data, 70% online data</td></tr>
-              <tr><td>Target critic ensemble</td><td>10 critics, minimum over ensemble</td></tr>
-              <tr><td>Initial policy-execution probability p<sub>0</sub></td><td>0.5</td></tr>
-              <tr><td>Scheduling horizon K</td><td>6000 environment steps (~10 min)</td></tr>
-              <tr><td>Controller chunk length L</td><td>40 steps</td></tr>
+              <tr><td>Control</td><td>10 Hz joint position targets for 16 Allegro DoF, episode horizon 900 steps</td></tr>
+              <tr><td>Observation / action dimension</td><td>60 / 16</td></tr>
+              <tr><td>Actor network</td><td>MLP 60 &rarr; 256 &rarr; 256 &rarr; (16 mean, 16 log-std), tanh activations, LayerNorm; tanh-squashed Gaussian, std clipped to [10<sup>&minus;5</sup>, 5]</td></tr>
+              <tr><td>Critic network</td><td>Ensemble of 10 Q-nets, each (60 + 16) &rarr; 256 &rarr; 256 &rarr; 1, tanh, LayerNorm; 2 randomly subsampled per target (REDQ-style)</td></tr>
+              <tr><td>Discount &gamma;</td><td>0.995</td></tr>
+              <tr><td>Learning rates (Adam)</td><td>actor 3&times;10<sup>&minus;4</sup> (linear warm-up over 200k updates), critic 3&times;10<sup>&minus;5</sup>, temperature 10<sup>&minus;4</sup></td></tr>
+              <tr><td>Batch size</td><td>256</td></tr>
+              <tr><td>UTD ratio</td><td>8</td></tr>
+              <tr><td>Polyak &tau;</td><td>0.01</td></tr>
+              <tr><td>Temperature &alpha;</td><td>auto-tuned, initial 0.05, target entropy &minus;16 (= &minus;action_dim &times; 1.0); entropy backup on</td></tr>
+              <tr><td>&alpha;<sub>eff</sub> (critic pretraining)</td><td>0.02</td></tr>
+              <tr><td>BC std</td><td>mean-only BC (std-loss weight 0), then log-std head set to constant std = 0.3 after BC</td></tr>
+              <tr><td>Action-clip &epsilon;</td><td>0.02 (demo actions clipped to [&minus;1 + &epsilon;, 1 &minus; &epsilon;] before the pre-tanh BC target)</td></tr>
+              <tr><td>BC gradient steps</td><td>12,000 (lr 3&times;10<sup>&minus;3</sup>, batch 256)</td></tr>
+              <tr><td>Soft-SARSA gradient steps</td><td>50,000 (lr 3&times;10<sup>&minus;5</sup>, batch 256, recorded next action, CQL off)</td></tr>
+              <tr><td>Demonstrations (rotation)</td><td>20 hardware MPC episodes, one full rotation each, ~12 min</td></tr>
+              <tr><td>Demonstrations (reorientation)</td><td>~7 min of hardware MPC interaction</td></tr>
+              <tr><td>Replay buffer / offline ratio</td><td>capacity 10<sup>6</sup>, offline sample ratio 0.3</td></tr>
+              <tr><td>MPC-policy mixing</td><td>policy probability 0.5 &rarr; 1.0 over 6,000 env steps (~10 min), chunk length 40</td></tr>
               <tr><td>Rotation reward</td><td>&lambda;<sub>&psi;</sub> = 20, &lambda;<sub>&tau;</sub> = &minus;0.3, b<sub>succ</sub> = 200, b<sub>drop</sub> = &minus;50</td></tr>
               <tr><td>Evaluation</td><td>5 policy-only episodes, 90 s horizon, success = one full 2&pi; rotation without a drop</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="content has-text-justified">
+          <p class="figure-caption">
+            Soft-SARSA pretraining used the same &gamma;, &tau;, critic ensemble, and Adam optimizer as online SAC,
+            with learning-rate warm-up disabled.
+          </p>
+        </div>
+
+        <h3 class="title is-5">PPO sim-to-real baseline</h3>
+        <div class="content has-text-justified">
+          <p class="figure-caption">
+            Stable-Baselines3 2.8.0; unlisted PPO settings are SB3 defaults.
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table is-striped is-hoverable is-fullwidth impl-table">
+            <thead>
+              <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Parallel envs</td><td>192 (subprocess)</td></tr>
+              <tr><td>Rollout per update</td><td>128 steps &times; 192 envs = 24,576</td></tr>
+              <tr><td>Minibatch / epochs</td><td>8,192 / 10</td></tr>
+              <tr><td>Learning rate</td><td>3&times;10<sup>&minus;4</sup> constant (Adam)</td></tr>
+              <tr><td>&gamma; / GAE &lambda;</td><td>0.99 / 0.95</td></tr>
+              <tr><td>Clip range</td><td>0.2, advantage normalization on</td></tr>
+              <tr><td>Entropy coef / value coef</td><td>0.01 / 0.5</td></tr>
+              <tr><td>Max grad norm</td><td>0.5</td></tr>
+              <tr><td>Total timesteps</td><td>15M</td></tr>
+              <tr><td>Env</td><td>10 Hz control (frame_skip 50), 900-step episodes, action EMA &alpha; = 0.5</td></tr>
+              <tr class="table-subheader"><td colspan="2">Domain randomization (uniform per episode reset; noise Gaussian per step)</td></tr>
+              <tr><td>Object size scale</td><td>U[1.0, 1.05] (mass and inertia rescaled with size)</td></tr>
+              <tr><td>Object mass</td><td>U[0.15, 0.20] kg</td></tr>
+              <tr><td>Sliding friction</td><td>object U[0.3, 0.5]; fingertips U[0.5, 0.8]; other hand geoms U[0.1, 0.3]</td></tr>
+              <tr><td>Allegro PD gain scale</td><td>U[0.6, 1.2]</td></tr>
+              <tr><td>Initial object position</td><td>&plusmn;0.01 m in y</td></tr>
+              <tr><td>Observation noise &sigma; (per step)</td><td>object pos 0.01 m, quat 0.04, joint pos 0.05, joint vel 0.2, object vel 0.04, yaw 0.05, last action 0.05</td></tr>
+              <tr><td>Action noise &sigma;</td><td>0.02</td></tr>
+              <tr><td>External force perturbation</td><td>off</td></tr>
             </tbody>
           </table>
         </div>
