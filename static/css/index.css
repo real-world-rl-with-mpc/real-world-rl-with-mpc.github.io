@@ -177,3 +177,134 @@ body {
 .navbar .icon {
   color: #363636;
 }
+
+/* Figure captions. */
+.figure-caption {
+  color: #7a7a7a;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+/* Side-by-side video comparisons. */
+.video-compare {
+  margin-top: 0.5rem;
+}
+
+.video-compare .column {
+  padding: 0.5rem;
+}
+
+.video-compare .compare-label {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  min-height: 1.5em;
+}
+
+.video-compare video {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #000;
+}
+
+.publication-video iframe {
+  border: 0;
+}
+
+/* Phone widths: captions read better left-aligned, and percent-width figures should fill the screen. */
+@media screen and (max-width: 768px) {
+  .figure-caption {
+    text-align: left !important;
+  }
+
+  .content img[style] {
+    width: 100% !important;
+  }
+}
+
+/* Two result figures side by side; the ablation plot is wider, so align both to a shared image row. */
+.figure-pair {
+  margin-top: 0.5rem;
+}
+
+.figure-pair .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.figure-pair .column > .content:last-child {
+  margin-top: auto;
+}
+
+.figure-pair img {
+  width: 100%;
+}
+
+/* Alternate section tint so consecutive sections read as distinct blocks. */
+.section-alt {
+  background-color: #f4f6f9;
+}
+
+.section-alt .content img {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.section-alt .video-compare video {
+  border-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Placeholder image filling a 16:9 video slot until the YouTube id is available. */
+.video-placeholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Two headline videos under the supplementary video. */
+.headline-videos {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.headline-videos .compare-label {
+  font-size: 1.15rem;
+}
+
+/* Supplementary video: narrower than the two headline videos below it. */
+.supp-video {
+  width: 62%;
+  margin: 0 auto;
+}
+
+/* Headline video row: wider than the text column so each video is large. */
+.headline-videos {
+  width: 120%;
+  margin-left: -10%;
+}
+
+@media screen and (max-width: 1150px) {
+  .headline-videos {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .supp-video {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .supp-video {
+    width: 100%;
+  }
+}

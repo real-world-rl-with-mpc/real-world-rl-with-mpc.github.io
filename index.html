@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="description"
         content="Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation">
-  <meta name="keywords" content="Reinforcement Learning, Model Predictive Control, Dexterous Manipulation, In-Hand Rotation, Allegro Hand, Robotics">
+  <meta name="keywords" content="Reinforcement Learning, Model Predictive Control, Dexterous Manipulation, In-Hand Rotation, Allegro Hand, Real-World RL, Robotics">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation</title>
 
@@ -12,19 +12,14 @@
         rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+  <script defer src="./static/js/index.js"></script>
 </head>
 <body>
 
@@ -40,7 +35,7 @@
 
           <div class="column has-text-centered">
             <div class="publication-links">
-              <!-- PDF Link. -->
+              <!-- PDF Link. TODO: point at the arXiv / camera-ready PDF once public. -->
               <span class="link-block">
                 <a href="#"
                    class="external-link button is-normal is-rounded is-dark">
@@ -50,7 +45,7 @@
                   <span>Paper</span>
                 </a>
               </span>
-              <!-- Video Link. -->
+              <!-- Video Link. TODO: replace # with https://youtu.be/SUPP_VIDEO_ID once uploaded. -->
               <span class="link-block">
                 <a href="#"
                    class="external-link button is-normal is-rounded is-dark">
@@ -62,11 +57,6 @@
               </span>
             </div>
 
-            <!-- Under construction notice. -->
-            <p class="is-size-5 has-text-weight-semibold has-text-grey" style="margin-top: 1.25rem;">
-              <span class="icon"><i class="fas fa-tools"></i></span>
-              Under Construction
-            </p>
           </div>
         </div>
       </div>
@@ -75,18 +65,57 @@
 </section>
 
 
-<section class="section">
+<!-- Supplementary video. -->
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <!-- Figure 1. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <div class="content has-text-centered">
-          <img src="./static/images/overview.png" alt="Framework overview">
+    <div class="hero-body">
+      <!-- TODO: supplementary video. Replace the placeholder image with the iframe below once the
+           YouTube id is known:
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/SUPP_VIDEO_ID?rel=0"
+                title="Supplementary video"
+                frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      -->
+      <div class="supp-video">
+        <div class="publication-video video-placeholder">
+          <img src="./static/images/placeholder.svg" alt="Supplementary video (coming soon)">
         </div>
       </div>
-    </div>
-    <!--/ Figure 1. -->
 
+      <!-- Two headline YouTube videos. -->
+      <div class="columns video-compare headline-videos">
+        <div class="column">
+          <p class="compare-label">Real-World Learning</p>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/rujBLIjs1mI?rel=0"
+                    title="Real-world learning"
+                    frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="column">
+          <p class="compare-label">1000 Consecutive Rotations without a Drop</p>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/XDgtNnLNZnY?rel=0"
+                    title="1000 consecutive rotations without a drop"
+                    frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="subtitle has-text-centered">
+        Sampling-based MPC provides prior experience and temporary guidance, so a 16-DoF Allegro hand learns
+        continuous in-hand rotation directly on hardware in <b>7 minutes</b> of online RL with about
+        <b>3 object drops</b>, then completes <b>1000 consecutive rotations</b> without a drop.
+      </h2>
+    </div>
+  </div>
+</section>
+<!--/ Supplementary video. -->
+
+
+<section class="section section-alt">
+  <div class="container is-max-desktop">
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
@@ -120,6 +149,154 @@
       </div>
     </div>
     <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Method overview. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method</h2>
+
+        <!-- Figure 1. -->
+        <div class="content has-text-centered">
+          <img src="./static/images/overview.png" alt="Framework overview">
+          <p class="figure-caption has-text-justified">
+            <b>Overview of our framework.</b> Stage 1 (Offline MPC Data Collection): trajectories are collected
+            via MPC. Stage 2 (Pretraining): the collected demonstrations pretrain the actor using behavior cloning
+            with standard-deviation initialization and the critic via Soft-SARSA. Stage 3 (Online SAC with Mixed
+            Replay and MPC-Policy Scheduling): the actor-critic network is fine-tuned with SAC using a mixed replay
+            buffer combining offline demonstrations and online transitions. An MPC-policy scheduling mechanism
+            dynamically alternates control between the learned policy and MPC for guided exploration.
+          </p>
+        </div>
+        <!--/ Figure 1. -->
+
+        <div class="content has-text-justified">
+          <p>
+            Sampling-based MPC serves as a scaffold for an off-policy learner, and the learned policy
+            progressively replaces MPC during real-world interaction. Both MPC and the policy command the same
+            joint-level hand-control interface, so the off-policy learner uses their transitions identically,
+            regardless of which controller generated them.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Method overview. -->
+
+  </div>
+</section>
+
+
+<section class="section section-alt">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Real-World Results</h2>
+
+        <!-- Ablations. -->
+        <h3 class="title is-4">The three roles of MPC are complementary</h3>
+        <div class="content has-text-justified">
+          <p>
+            MPC replay (R) preserves task-relevant prior experience, pretraining (P) provides a better starting
+            point, and online guidance (G) improves the quality and consistency of newly collected interaction.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="./static/images/ablations.png" alt="Ablation results for continuous in-hand rotation" loading="lazy">
+          <p class="figure-caption has-text-justified">
+            <b>Ablation results for continuous in-hand rotation.</b>
+          </p>
+        </div>
+        <!--/ Ablations. -->
+
+        <!-- Adaptation. -->
+        <h3 class="title is-4">Adaptation to new object geometries</h3>
+        <div class="content has-text-justified">
+          <p>
+            Starting from the policy trained on the 45 mm hexagonal object, continued real-world learning with
+            online MPC guidance adapts it to a 35 mm hexagonal object and a 55 mm circular object, without new
+            offline MPC data or repeated pretraining.
+          </p>
+        </div>
+        <div class="columns video-compare">
+          <div class="column">
+            <p class="compare-label">35 mm hexagonal object</p>
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/-PFhT1d7SZw?rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=-PFhT1d7SZw"
+                      title="Adaptation to a 35 mm hexagonal object"
+                      frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+          <div class="column">
+            <p class="compare-label">55 mm circular object</p>
+            <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/L-_6bnzpzR8?rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=L-_6bnzpzR8"
+                    title="Adaptation to a 55 mm circular object"
+                    frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          </div>
+        </div>
+        <!--/ Adaptation. -->
+
+        <!-- Goal-conditioned reorientation. -->
+        <h3 class="title is-4">Goal-conditioned reorientation</h3>
+        <div class="content has-text-justified">
+          <p>
+            The same framework learns goal-conditioned reorientation about an axis perpendicular to the
+            object&rsquo;s principal axis, reaching commanded headings within &plusmn;20&deg; while maintaining
+            the grasp.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video class="lazy-video" autoplay muted loop playsinline controls preload="metadata" width="75%">
+            <source src="./static/videos/reorientation.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!--/ Goal-conditioned reorientation. -->
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Implementation Details</h2>
+        <div class="content has-text-justified">
+          <p>
+            Settings shared across experiments.
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Control frequency</td><td>10 Hz, joint position targets for 16 Allegro DoF</td></tr>
+              <tr><td>Offline MPC trajectories (rotation)</td><td>20 trajectories, one full rotation each, ~12 min</td></tr>
+              <tr><td>Offline MPC data (reorientation)</td><td>~7 min of interaction</td></tr>
+              <tr><td>Mini-batch replay mix</td><td>30% offline MPC data, 70% online data</td></tr>
+              <tr><td>Target critic ensemble</td><td>10 critics, minimum over ensemble</td></tr>
+              <tr><td>Initial policy-execution probability p<sub>0</sub></td><td>0.5</td></tr>
+              <tr><td>Scheduling horizon K</td><td>6000 environment steps (~10 min)</td></tr>
+              <tr><td>Controller chunk length L</td><td>40 steps</td></tr>
+              <tr><td>Rotation reward</td><td>&lambda;<sub>&psi;</sub> = 20, &lambda;<sub>&tau;</sub> = &minus;0.3, b<sub>succ</sub> = 200, b<sub>drop</sub> = &minus;50</td></tr>
+              <tr><td>Evaluation</td><td>5 policy-only episodes, 90 s horizon, success = one full 2&pi; rotation without a drop</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
