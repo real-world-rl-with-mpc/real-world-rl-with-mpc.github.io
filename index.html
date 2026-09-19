@@ -69,28 +69,19 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <!-- TODO: supplementary video. Replace the placeholder image with the iframe below once the
-           YouTube id is known:
-      <div class="publication-video">
-        <iframe src="https://www.youtube.com/embed/SUPP_VIDEO_ID?rel=0"
-                title="Supplementary video"
-                frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      -->
-      <div class="supp-video">
-        <div class="publication-video video-placeholder">
-          <img src="./static/images/placeholder.svg" alt="Supplementary video (coming soon)">
-        </div>
-      </div>
-
-      <!-- Two headline YouTube videos. -->
+      <!-- Supplementary video + 1000 rotations, side by side. -->
       <div class="columns video-compare headline-videos">
         <div class="column">
-          <p class="compare-label">Real-World Learning</p>
+          <p class="compare-label">Supplementary Video</p>
+          <!-- TODO: replace the placeholder image with the iframe below once the YouTube id is known:
           <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/rujBLIjs1mI?rel=0"
-                    title="Real-world learning"
+            <iframe src="https://www.youtube.com/embed/SUPP_VIDEO_ID?rel=0"
+                    title="Supplementary video"
                     frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          -->
+          <div class="publication-video video-placeholder">
+            <img src="./static/images/placeholder.svg" alt="Supplementary video (coming soon)">
           </div>
         </div>
         <div class="column">
@@ -197,6 +188,19 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Real-World Results</h2>
+
+        <!-- Real-world learning video. -->
+        <h3 class="title is-4">Real-World Learning</h3>
+        <div class="content has-text-centered">
+          <div class="training-video">
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/rujBLIjs1mI?rel=0"
+                      title="Real-world learning"
+                      frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+        <!--/ Real-world learning video. -->
 
         <!-- Ablations. -->
         <h3 class="title is-4">The three roles of MPC are complementary</h3>

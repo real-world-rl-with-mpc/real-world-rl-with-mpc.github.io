@@ -280,31 +280,28 @@ body {
   font-size: 1.15rem;
 }
 
-/* Supplementary video: narrower than the two headline videos below it. */
-.supp-video {
-  width: 62%;
-  margin: 0 auto;
-}
-
 /* Headline video row: wider than the text column so each video is large. */
 .headline-videos {
-  width: 120%;
-  margin-left: -10%;
+  width: 136%;
+  margin-left: -18%;
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1320px) {
   .headline-videos {
     width: 100%;
     margin-left: 0;
   }
 
-  .supp-video {
-    width: 75%;
-  }
+}
+
+/* Training video at the start of the results: not full column width. */
+.training-video {
+  width: 90%;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 768px) {
-  .supp-video {
+  .training-video {
     width: 100%;
   }
 }
