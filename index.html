@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css?v=20260919c">
+  <link rel="stylesheet" href="./static/css/index.css?v=20260919d">
   <link rel="icon" href="./static/images/favicon.svg">
 
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -69,29 +69,16 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <!-- Supplementary video + 1000 rotations, side by side. -->
-      <div class="columns video-compare headline-videos">
-        <div class="column">
-          <p class="compare-label">Supplementary Video</p>
-          <!-- TODO: replace the placeholder image with the iframe below once the YouTube id is known:
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/SUPP_VIDEO_ID?rel=0"
-                    title="Supplementary video"
-                    frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          -->
-          <div class="publication-video video-placeholder">
-            <img src="./static/images/placeholder.svg" alt="Supplementary video (coming soon)">
-          </div>
-        </div>
-        <div class="column">
-          <p class="compare-label">1000 Consecutive Rotations without a Drop</p>
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/XDgtNnLNZnY?rel=0"
-                    title="1000 consecutive rotations without a drop"
-                    frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
+      <!-- TODO: supplementary video. Replace the placeholder image with the iframe below once the
+           YouTube id is known:
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/SUPP_VIDEO_ID?rel=0"
+                title="Supplementary video"
+                frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      -->
+      <div class="publication-video video-placeholder">
+        <img src="./static/images/placeholder.svg" alt="Supplementary video (coming soon)">
       </div>
 
       <h2 class="subtitle has-text-centered">
@@ -99,6 +86,17 @@
         continuous in-hand rotation directly on hardware in <b>7 minutes</b> of online RL with about
         <b>3 object drops</b>, then completes <b>1000 consecutive rotations</b> without a drop.
       </h2>
+
+      <!-- 1000 consecutive rotations, full uncut recording. -->
+      <div class="long-run-video">
+        <p class="compare-label">[Uncut] 1000 Consecutive Rotations without a Drop in 110 Minutes</p>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/XDgtNnLNZnY?rel=0"
+                  title="Uncut recording of 1000 consecutive rotations without a drop"
+                  frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <!--/ 1000 consecutive rotations. -->
     </div>
   </div>
 </section>

@@ -270,29 +270,6 @@ body {
   border-radius: 10px;
 }
 
-/* Two headline videos under the supplementary video. */
-.headline-videos {
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.headline-videos .compare-label {
-  font-size: 1.15rem;
-}
-
-/* Headline video row: wider than the text column so each video is large. */
-.headline-videos {
-  width: 136%;
-  margin-left: -18%;
-}
-
-@media screen and (max-width: 1320px) {
-  .headline-videos {
-    width: 100%;
-    margin-left: 0;
-  }
-
-}
 
 /* Training video at the start of the results: not full column width. */
 .training-video {
@@ -321,5 +298,24 @@ body {
 @media screen and (max-width: 768px) {
   .impl-table td:first-child {
     white-space: normal;
+  }
+}
+
+/* Uncut 1000-rotation recording under the teaser sentence. */
+.long-run-video {
+  width: 85%;
+  margin: 1.5rem auto 0;
+}
+
+.long-run-video .compare-label {
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .long-run-video {
+    width: 100%;
   }
 }
