@@ -319,3 +319,11 @@ body {
     width: 100%;
   }
 }
+
+/* Main supplementary video (local mp4, click to play). */
+#supp-video {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  background: #000;
+}
